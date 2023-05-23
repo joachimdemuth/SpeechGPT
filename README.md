@@ -1,1 +1,1 @@
-GO TO SITE: https://joachimdemuth.github.io/SpeechGPT/public/index.html
+GO TO SITE: https://joachimdemuth.github.io/SpeechGPT/
