@@ -53,7 +53,7 @@ function App() {
 		baseURL: 'https://api.openai.com/v1/chat/completions',
 		headers: {
 			Authorization:
-				`Bearer ${process.env.REACT_APP_OPENAI_API_KEY}`,
+				`Bearer ${process.env.OPENAI_API_KEY}`,
 				'Content-Type': 'application/json',
 		},
 	});
