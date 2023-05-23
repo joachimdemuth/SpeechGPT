@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/SpeechGPT/static/css/main.312f16b8.css",
-    "main.js": "/SpeechGPT/static/js/main.e4cf9a0b.js",
+    "main.js": "/SpeechGPT/static/js/main.2b1d7d43.js",
     "static/js/787.98fe059c.chunk.js": "/SpeechGPT/static/js/787.98fe059c.chunk.js",
     "index.html": "/SpeechGPT/index.html",
     "main.312f16b8.css.map": "/SpeechGPT/static/css/main.312f16b8.css.map",
-    "main.e4cf9a0b.js.map": "/SpeechGPT/static/js/main.e4cf9a0b.js.map",
+    "main.2b1d7d43.js.map": "/SpeechGPT/static/js/main.2b1d7d43.js.map",
     "787.98fe059c.chunk.js.map": "/SpeechGPT/static/js/787.98fe059c.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.312f16b8.css",
-    "static/js/main.e4cf9a0b.js"
+    "static/js/main.2b1d7d43.js"
   ]
 }
