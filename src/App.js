@@ -5,8 +5,10 @@ import SpeechRecognition, {
 } from 'react-speech-recognition';
 import './App.css';
 import { MdMic } from 'react-icons/md';
-import { Configuration, OpenAIApi } from 'openai';
+
 import axios from 'axios';
+
+const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
 
 function App() {
 	const [value, setValue] = React.useState('');
@@ -29,32 +31,31 @@ function App() {
 			{ role: 'system', content: 'You are a helpful assistent.' },
 			{ role: 'user', content: value },
 		],
-		max_tokens: 500,
+		max_tokens: 3500,
 		temperature: 0.9,
 		top_p: 1,
 		frequency_penalty: 0.0,
 		presence_penalty: 0.6,
 		stop: ['\n', ' Human:', ' AI:'],
 	};
-	const testBody = {
-		model: 'gpt-3.5-turbo',
-		messages: [
-			{ role: 'system', content: 'You are a helpful assistent.' },
-			{ role: 'user', content: 'What is the meaning of life?' },
-		],
-		max_tokens: 500,
-		temperature: 0.9,
-		top_p: 1,
-		frequency_penalty: 0.0,
-		presence_penalty: 0.6,
-		stop: ['\n', ' Human:', ' AI:'],
-	};
+	// const testBody = {
+	// 	model: 'gpt-3.5-turbo',
+	// 	messages: [
+	// 		{ role: 'system', content: 'You are a helpful assistent.' },
+	// 		{ role: 'user', content: 'What is the meaning of life?' },
+	// 	],
+	// 	max_tokens: 500,
+	// 	temperature: 0.9,
+	// 	top_p: 1,
+	// 	frequency_penalty: 0.0,
+	// 	presence_penalty: 0.6,
+	// 	stop: ['\n', ' Human:', ' AI:'],
+	// };
 	const openai = axios.create({
 		baseURL: 'https://api.openai.com/v1/chat/completions',
 		headers: {
-			Authorization:
-				`Bearer ${process.env.OPENAI_API_KEY}`,
-				'Content-Type': 'application/json',
+			Authorization: `Bearer ${OPENAI_API_KEY}`,
+			'Content-Type': 'application/json',
 		},
 	});
 
@@ -82,14 +83,16 @@ function App() {
 			// const res = await openai.post('', testBody);
 			// setAnswer(res.data.choices[0].message.content);
 			// setLoading(false);
-		};
+		}
 	};
 
 	return (
 		<Container>
-			<Title>TalkGPT</Title>
+			<InnerContainer>
+
+			<Title>SpeechGPT</Title>
 			<TranscriptContainer>
-				<TranscriptTitle>Your question:</TranscriptTitle>
+				<TranscriptTitle>Your question: </TranscriptTitle>
 				<Transcript>
 					{value.charAt(0).toUpperCase() + value.slice(1)}
 				</Transcript>
@@ -97,7 +100,7 @@ function App() {
 			<AnswerContainer>
 				<AnswerTitle>Answer:</AnswerTitle>
 				{loading ? (
-					<p>Loading answer...</p>
+					<Box />
 				) : (
 					<>
 						<Answer>{answer}</Answer>
@@ -110,7 +113,8 @@ function App() {
 				</Button>
 				<Explainer>Hold down the button to start speaking</Explainer>
 			</ButtonContainer>
-			{/* <button onClick={resetTranscript}>Reset</button> */}
+			</InnerContainer>
+
 		</Container>
 	);
 }
@@ -122,29 +126,57 @@ const Container = styled.div`
 	flex-direction: column;
 	align-items: center;
 	justify-content: flex-start;
-	gap: 64px;
+
 	padding-top: 48px;
+
 	width: 100%;
 	height: 100vh;
 	background: rgb(237, 236, 255);
 	background: linear-gradient(
 		137deg,
-		rgba(237, 236, 255, 1) 0%,
-		rgba(253, 255, 240, 1) 50%,
-		rgba(220, 232, 255, 1) 100%
+		rgba(229, 227, 255, 1) 0%,
+		rgba(250, 255, 221, 1) 50%,
+		rgba(193, 213, 251, 1) 100%
 	);
+
+	background-size: 400% 400%;
+	animation: gradient 15s ease infinite;
+
+	@keyframes gradient {
+		0% {
+			background-position: 0% 50%;
+		}
+		50% {
+			background-position: 100% 50%;
+		}
+		100% {
+			background-position: 0% 50%;
+		}
+	}
+	
 `;
+
+const InnerContainer = styled.div`
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: flex-start;
+	gap: 64px;
+	width: 100%;
+	height: 100%;
+	max-width: 1200px;
+	`;
 
 const Title = styled.h1`
 	font-size: 3rem;
 	margin-top: 20px;
 	margin-bottom: 20px;
-	color: #04125c;
+	color:rgba(88, 105, 255, 0.7);
 `;
 
 const Explainer = styled.p`
 	font-size: 0.8rem;
-
+	user-select: none;
 	margin-bottom: 20px;
 	color: grey;
 `;
@@ -160,7 +192,9 @@ const ButtonContainer = styled.div`
 const Button = styled.button`
 	display: flex;
 	align-items: center;
-	background: #938fff;
+	background: rgba(88, 105, 255, 0.7);
+	box-shadow: 1px 2px 8px 2px rgba(0, 0, 0, 0.1), inset 2px 1px 8px rgba(203, 236, 255, 0.1);
+	backdrop-filter: blur(29px);
 	color: #fff;
 	height: 80px;
 	width: 80px;
@@ -197,17 +231,25 @@ const Button = styled.button`
 
 const TranscriptContainer = styled.div`
 	display: flex;
-	width: 80%;
+	width: 50%;
 	flex: 1;
 	flex-direction: column;
 	align-items: flex-start;
 	justify-content: flex-start;
 	gap: 16px;
+
+	@media only screen and (max-width: 768px) {
+		width: 80%;
+	}
 `;
 
 const TranscriptTitle = styled.p`
 	font-size: 1rem;
-	color: grey;
+
+	font-family: 'Raleway', sans-serif;
+	font-weight: 200;
+
+	color: rgba(88, 105, 255, 0.7);
 	margin: 0;
 `;
 
@@ -218,17 +260,24 @@ const Transcript = styled.p`
 
 const AnswerContainer = styled.div`
 	display: flex;
-	width: 80%;
-flex:1;
+	width: 50%;
+
+	flex: 1;
 	flex-direction: column;
 	align-items: flex-start;
 	justify-content: flex-start;
 	gap: 16px;
+	@media only screen and (max-width: 768px) {
+		width: 80%;
+	}
 `;
 
 const AnswerTitle = styled.p`
 	font-size: 1rem;
-	color: grey;
+	font-family: 'Raleway', sans-serif;
+	font-weight: 200;
+
+	color: rgba(88, 105, 255, 0.7);
 	margin: 0;
 `;
 
@@ -236,3 +285,21 @@ const Answer = styled.p`
 	font-size: 1.2rem;
 	margin: 0;
 `;
+
+const Box = styled.div`
+	width: 8px;
+	height: 16px;
+	background-color: rgba(88, 105, 255, 0.7);
+	animation: pulse .8s infinite;
+
+	@keyframes pulse {
+		0% {
+			opacity: 0;
+		}
+		50% {
+			opacity: 1;
+		}
+		100% {
+			opacity: 0;
+		}
+;`
